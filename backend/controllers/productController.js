@@ -7,7 +7,7 @@ async function addProduct (req, res) {
             size,
             unitaryPrice,
             description
-        } = req.body;
+        } = req.body
 
         const product = Product({
             name,
@@ -16,11 +16,16 @@ async function addProduct (req, res) {
             description
         })
 
+        if(req.file) {
+            const { filename } = req.file
+            product.setImgUrl(filename);
+        }
+
         const productStored = await product.save()
 
         res.status(201).send({ productStored })
     } catch (error) {
-        res.status(500).send({ message: e.message })
+        res.status(500).send({ message: error.message })
     }
 }
 
